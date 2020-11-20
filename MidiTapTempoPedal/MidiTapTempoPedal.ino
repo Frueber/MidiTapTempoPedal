@@ -10,6 +10,11 @@
 #include <MIDI.h>
 
 // Serial: 0 RX + 1 TX.  
+// Reads with RX.  
+// Writes with TX.  
+// We will be unable to communicate with the Arduino via the serial port (USB) 
+// while the MIDI circuit is connected to RX.  
+// If the software on the Arduino ever needs updated we must disconnect the RX and TX (pins 0 and 1) connections.  
 MIDI_CREATE_DEFAULT_INSTANCE();
 
 // TS (Tip Sleeve - 1/4" Guitar Cable) 5V signal pin.  
@@ -17,6 +22,10 @@ const byte tipSleevePin = 2;
 
 // Tap Tempo Button pin.  
 const byte tapTempoButtonPin = 3;
+
+// Tempo signal pins; normally closed or open (NC / NO).  
+const byte normallyClosedTempoSignalPin = 4;
+const byte normallyOpenTempoSignalPin = 5;
 
 // Whether or not the tap tempo button is held.  
 // You must release the button in order to trigger another tempo change signal.  
@@ -46,10 +55,16 @@ void handleMidiControlChange(
   }
 }
 
-void interruptTempoChangeSignal()
+void triggerTempoChangeSignal()
 {
-  digitalWrite(tipSleevePin, LOW);
-  digitalWrite(tipSleevePin, HIGH);
+  // If both options are selected, the normally open option will be set to avoid undesirable results such as harming a connected device.  
+  bool isNormallyClosedTempoSignal = (
+    digitalRead(normallyClosedTempoSignalPin) == HIGH
+    && digitalRead(normallyOpenTempoSignalPin) == LOW
+  );
+  
+  digitalWrite(tipSleevePin, isNormallyClosedTempoSignal ? LOW : HIGH);
+  digitalWrite(tipSleevePin, isNormallyClosedTempoSignal ? HIGH : LOW);
 }
 
 void setup()
@@ -61,17 +76,23 @@ void setup()
 
   // Initialize the tap tempo button.  
   pinMode(tapTempoButtonPin, INPUT);
-  
-  // Initialize and set the 5V tempo signal pin.  
+
+  // Initialize the tempo signal pins.  
+  pinMode(normallyClosedTempoSignalPin, INPUT);
+  pinMode(normallyOpenTempoSignalPin, INPUT);
+
+  // Initialize the 5V tempo signal pin.  
   pinMode(tipSleevePin, OUTPUT);
-  digitalWrite(tipSleevePin, HIGH);
+
+  // Set the appropriate button functionality.  
+  triggerTempoChangeSignal();
 }
 
 void loop()
 {
   MIDI.read();
 
-  // Trigger MIDI Out, Thru, and interrupt 5V signal on guitar cable port.  
+  // Trigger MIDI Out, Thru, and 5V signal on guitar cable port.  
   // These events should be done as close together as possible.  
   
   if(
@@ -92,7 +113,7 @@ void loop()
 
   if(triggerTempoChangeSignalFromMidi)
   {
-    interruptTempoChangeSignal();
+    triggerTempoChangeSignal();
 
     // Note that MIDI Thru will allow for all MIDI signals to be relayed.  
     // We only need to send the MIDI Out control change signal when the tempo button is pressed.  
@@ -105,7 +126,7 @@ void loop()
   // The MIDI trigger is given precedence in the cycle.  
   if(triggerTempoChangeSignalFromButtonPress)
   {
-    interruptTempoChangeSignal();
+    triggerTempoChangeSignal();
     
     MIDI.sendControlChange(
       tempoChangeMidiControlChangeNumber,
