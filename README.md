@@ -1,7 +1,13 @@
 # MIDI Tap Tempo Pedal  
 
+Also known as **TOMATO** (Tap or MIDI Automation Tempo Operator).  
+
 A guitar pedal that supports physical tempo taps and MIDI Out/Thru accordingly.  
 The MIDI Tap Tempo Pedal can be any pedal-slingers on-beat bestie.  
+
+---
+
+## Introduction  
 
 The pedal accepts a standard, physically initiated, button press, or "tap", to set the tempo. Any two presses will set the tempo.  
 Simple enough - what makes this special?  
@@ -20,6 +26,8 @@ It's possible that another Arduino board type could be used, such as the UNO or 
 > - We will be unable to communicate with the Arduino via the serial port (USB) while the MIDI circuit is connected to RX and TX.  
 > If the software on the Arduino ever needs updated we must disconnect the RX and TX connections (pins 0 and 1). To do this, something like jumper caps can be used.  
 
+---
+
 ## Hardware  
 
 ### Microprocessor  
@@ -31,12 +39,12 @@ It's possible that another Arduino board type could be used, such as the UNO or 
 - 1 TS Jack (Mono 1/4" Guitar Cable Jack).  
 - 2 MIDI ports (5 pin).  
 - 1 5.5mm x 2.1mm 9V DC electrical jack (chosen power source).  
-  Most tap tempo pedals won't need a power source as a 5V signal will come from the connected pedal. This version is opting for a separate 9V power source to ensure that the Arduino will always have enough power for operation with any connected device(s).  
+  > Most tap tempo pedals won't need a power source as a 5V signal will come from the connected pedal. This version is opting for a separate 9V power source to ensure that the Arduino will always have enough power for operation with any connected device(s).  
 
 ### Peripherals  
 
 - 1 guitar pedal foot switch.  
-  As the Arduino will handle the NC / NO (normally closed / normally open) circuit for button presses there isn't a need for a complex button that can support NC / NO or bypass circuitry. A simple two-pole momentary foot switch is perfect for the job.  
+  > As the Arduino will handle the NC / NO (normally closed / normally open) circuit for button presses there isn't a need for a complex button that can support NC / NO or bypass circuitry. A simple two-pole momentary foot switch is perfect for the job.  
 
 ### Components  
 
@@ -44,11 +52,14 @@ It's possible that another Arduino board type could be used, such as the UNO or 
 - 1 4.7k Ohm resistor.  
 - 1 Diode (1N4007).  
 - 1 6N138 Optocoupler.  
-- 3 Jumper caps (or similar method of connecting/disconnecting pins).  
-- 2 2-pin connectors; used with jumper caps.  
-  Used for connecting and disconnecting the RX and TX pins.  
-- 1 3-pin connector; used with jumper cap (a switch could also be used).  
-  Used for switching between a NC or NO (normally closed/open) tempo signal. If connecting to a device via the instrument cable jack make sure to check the specification of that device before use; choose NC or NO accordingly.  
+- 2 Jumper caps.
+  > Or a similar method of connecting/disconnecting pins.  
+- 2 2-pin connectors.  
+  > Used with the jumper caps to connect and disconnect the RX and TX pins.  
+- 1 switch, such as a single DIP, slide, or on/off switch.  
+  or  
+  1 2-pin connector; an additional jumper cap would be needed.  
+  > Used for switching between a NC or NO (normally closed/open) tempo signal. If connecting to a device via the instrument cable jack make sure to check the specification of that device before use; choose NC or NO accordingly.  
 
 ### Case  
 
@@ -66,9 +77,13 @@ A decent PCB designer tool is [EasyEDA](https://easyeda.com).
 After designing a board you can get the PCB created by uploading your files to any PCB manufacturer that works for you. One that is connected with EasyEDA is [JLCPCB](https://jlcpcb.com/).  
 You can also wire and/or solder in any way you'd like. Feel free to use the PCB files here for reference.  
 
+---
+
 ## Contributors  
 
 Owen Shartle  
+
+---
 
 ## Change Log  
 - 11/19/2020: Created.  

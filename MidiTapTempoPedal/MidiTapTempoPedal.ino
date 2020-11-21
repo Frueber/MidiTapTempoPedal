@@ -23,9 +23,10 @@ const byte tipSleevePin = 2;
 // Tap Tempo Button pin.  
 const byte tapTempoButtonPin = 3;
 
-// Tempo signal pins; normally closed or open (NC / NO).  
+// Tempo signal pin.  
+// Normally Closed (NC) when on (HIGH).  
+// Normally Open (NO) when off (LOW).  
 const byte normallyClosedTempoSignalPin = 4;
-const byte normallyOpenTempoSignalPin = 5;
 
 // Whether or not the tap tempo button is held.  
 // You must release the button in order to trigger another tempo change signal.  
@@ -57,11 +58,8 @@ void handleMidiControlChange(
 
 void triggerTempoChangeSignal()
 {
-  // If both options are selected, the normally open option will be set to avoid undesirable results such as harming a connected device.  
-  bool isNormallyClosedTempoSignal = (
-    digitalRead(normallyClosedTempoSignalPin) == HIGH
-    && digitalRead(normallyOpenTempoSignalPin) == LOW
-  );
+  // The Normally Open option is the default to avoid undesirable results such as harming a connected device.  
+  bool isNormallyClosedTempoSignal = digitalRead(normallyClosedTempoSignalPin) == HIGH;
   
   digitalWrite(tipSleevePin, isNormallyClosedTempoSignal ? LOW : HIGH);
   digitalWrite(tipSleevePin, isNormallyClosedTempoSignal ? HIGH : LOW);
@@ -77,9 +75,8 @@ void setup()
   // Initialize the tap tempo button.  
   pinMode(tapTempoButtonPin, INPUT);
 
-  // Initialize the tempo signal pins.  
+  // Initialize the tempo signal pin.  
   pinMode(normallyClosedTempoSignalPin, INPUT);
-  pinMode(normallyOpenTempoSignalPin, INPUT);
 
   // Initialize the 5V tempo signal pin.  
   pinMode(tipSleevePin, OUTPUT);
