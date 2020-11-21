@@ -115,7 +115,7 @@ void setup()
 
 void loop()
 {
-  handleTempoSignalSetting();
+  handleTempoSignalTypeSetting();
   MIDI.read();
   handleTapTempoButton();
 }
