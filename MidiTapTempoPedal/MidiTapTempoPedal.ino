@@ -106,7 +106,7 @@ void setup()
   // Initialize the tap tempo button.  
   pinMode(tapTempoButtonPin, INPUT);
 
-  // Initialize the tempo signal pin.  
+  // Initialize the tempo signal type pin.  
   pinMode(normallyClosedTempoSignalPin, INPUT);
 
   // Initialize the 5V tempo signal pin.  
