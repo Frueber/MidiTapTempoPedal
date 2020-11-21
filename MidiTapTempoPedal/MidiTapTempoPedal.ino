@@ -28,6 +28,9 @@ const byte tapTempoButtonPin = 3;
 // Normally Open (NO) when off (LOW).  
 const byte normallyClosedTempoSignalPin = 4;
 
+// Whether or not the tempo signal type is normally closed, or normally open.  
+bool isNormallyClosedTempoSignal = false;
+
 // Whether or not the tap tempo button is held.  
 // You must release the button in order to trigger another tempo change signal.  
 bool isTapTempoButtonHeld = false;
@@ -36,11 +39,13 @@ bool isTapTempoButtonHeld = false;
 const byte midiChannel = 1;
 const byte tempoChangeMidiControlChangeNumber = 64;
 
-void triggerTempoChangeSignal()
+void handleTempoSignalTypeSetting()
 {
-  // The Normally Open option is the default to avoid undesirable results such as harming a connected device.  
-  bool isNormallyClosedTempoSignal = digitalRead(normallyClosedTempoSignalPin) == HIGH;
-  
+  isNormallyClosedTempoSignal = digitalRead(normallyClosedTempoSignalPin) == HIGH;
+}
+
+void triggerTempoChangeSignal()
+{  
   digitalWrite(tipSleevePin, isNormallyClosedTempoSignal ? LOW : HIGH);
   delay(50);
   digitalWrite(tipSleevePin, isNormallyClosedTempoSignal ? HIGH : LOW);
@@ -66,7 +71,6 @@ void handleMidiControlChange(
 
 void handleTapTempoButton()
 {
-  bool isNormallyClosedTempoSignal = digitalRead(normallyClosedTempoSignalPin) == HIGH;
   bool isTapTempoButtonPressed = digitalRead(tapTempoButtonPin) == HIGH;
 
   if(isTapTempoButtonPressed)
@@ -107,13 +111,11 @@ void setup()
 
   // Initialize the 5V tempo signal pin.  
   pinMode(tipSleevePin, OUTPUT);
-
-  // Set the appropriate button functionality.  
-  triggerTempoChangeSignal();
 }
 
 void loop()
 {
+  handleTempoSignalSetting();
   MIDI.read();
   handleTapTempoButton();
 }
