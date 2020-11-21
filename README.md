@@ -50,6 +50,7 @@ It's possible that another Arduino board type could be used, such as the UNO or 
 
 - 3 220 Ohm resistors.  
 - 1 4.7k Ohm resistor.  
+- 1 10k Ohm resistor.  
 - 1 Diode (1N4007).  
 - 1 6N138 Optocoupler.  
 - 2 Jumper caps.

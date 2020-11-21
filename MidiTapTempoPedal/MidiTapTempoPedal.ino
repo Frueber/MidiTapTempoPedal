@@ -36,9 +36,15 @@ bool isTapTempoButtonHeld = false;
 const byte midiChannel = 1;
 const byte tempoChangeMidiControlChangeNumber = 64;
 
-// Whether or not the tempo change signal should be triggered (from either source).  
-bool triggerTempoChangeSignalFromButtonPress = false;
-bool triggerTempoChangeSignalFromMidi = false;
+void triggerTempoChangeSignal()
+{
+  // The Normally Open option is the default to avoid undesirable results such as harming a connected device.  
+  bool isNormallyClosedTempoSignal = digitalRead(normallyClosedTempoSignalPin) == HIGH;
+  
+  digitalWrite(tipSleevePin, isNormallyClosedTempoSignal ? LOW : HIGH);
+  delay(50);
+  digitalWrite(tipSleevePin, isNormallyClosedTempoSignal ? HIGH : LOW);
+}
 
 void handleMidiControlChange(
   byte channel,
@@ -52,17 +58,38 @@ void handleMidiControlChange(
     && velocity > 0
   )
   {
-    triggerTempoChangeSignalFromMidi = true;
+    // Note that MIDI Thru will allow for all MIDI signals to be relayed.  
+    // We only need to send the MIDI Out control change signal when the tempo button is pressed.  
+    triggerTempoChangeSignal();
   }
 }
 
-void triggerTempoChangeSignal()
+void handleTapTempoButton()
 {
-  // The Normally Open option is the default to avoid undesirable results such as harming a connected device.  
   bool isNormallyClosedTempoSignal = digitalRead(normallyClosedTempoSignalPin) == HIGH;
-  
-  digitalWrite(tipSleevePin, isNormallyClosedTempoSignal ? LOW : HIGH);
-  digitalWrite(tipSleevePin, isNormallyClosedTempoSignal ? HIGH : LOW);
+  bool isTapTempoButtonPressed = digitalRead(tapTempoButtonPin) == HIGH;
+
+  if(isTapTempoButtonPressed)
+  {
+    digitalWrite(tipSleevePin, isNormallyClosedTempoSignal ? LOW : HIGH);
+
+    if(!isTapTempoButtonHeld)
+    {
+      isTapTempoButtonHeld = true;
+
+      MIDI.sendControlChange(
+        tempoChangeMidiControlChangeNumber,
+        127,
+        midiChannel
+      );
+    }
+  }
+  else
+  {
+    digitalWrite(tipSleevePin, isNormallyClosedTempoSignal ? HIGH : LOW);
+    
+    isTapTempoButtonHeld = false;
+  }
 }
 
 void setup()
@@ -88,49 +115,5 @@ void setup()
 void loop()
 {
   MIDI.read();
-
-  // Trigger MIDI Out, Thru, and 5V signal on guitar cable port.  
-  // These events should be done as close together as possible.  
-  
-  if(
-    !isTapTempoButtonHeld
-    && digitalRead(tapTempoButtonPin) == HIGH
-  )
-  {
-    triggerTempoChangeSignalFromButtonPress = true;
-    isTapTempoButtonHeld = true;
-  }
-  else if(
-    isTapTempoButtonHeld
-    && digitalRead(tapTempoButtonPin) == LOW  
-  )
-  {
-    isTapTempoButtonHeld = false;
-  }
-
-  if(triggerTempoChangeSignalFromMidi)
-  {
-    triggerTempoChangeSignal();
-
-    // Note that MIDI Thru will allow for all MIDI signals to be relayed.  
-    // We only need to send the MIDI Out control change signal when the tempo button is pressed.  
-    
-    triggerTempoChangeSignalFromMidi = false;
-    triggerTempoChangeSignalFromButtonPress = false;
-  }
-
-  // We will prevent a MIDI message and tempo change button press from duplicating the signal.  
-  // The MIDI trigger is given precedence in the cycle.  
-  if(triggerTempoChangeSignalFromButtonPress)
-  {
-    triggerTempoChangeSignal();
-    
-    MIDI.sendControlChange(
-      tempoChangeMidiControlChangeNumber,
-      127,
-      midiChannel
-    );
-
-    triggerTempoChangeSignalFromButtonPress = false;
-  }
+  handleTapTempoButton();
 }
