@@ -44,7 +44,7 @@ unsigned long simulatedTempoTapStartTimeInMilliseconds = 0;
 
 // Simulated tempo button press (tap) duration in milliseconds.  
 // How long a simulated tempo tap will last.  
-unsigned long simulatedTempoTapDurationInMilliseconds = 50;
+unsigned long simulatedTempoTapDurationInMilliseconds = 60;
 
 void handleTempoSignalTypeSetting()
 {
@@ -82,11 +82,14 @@ void handleMidiControlChange(
     && velocity > 0
   )
   {
-    // Set bool or time to start tempo tap.  
-    simulatedTempoTapStartTimeInMilliseconds = millis();
-  }
+    unsigned long timePassedSinceLastSimulatedTempoTapInMilliseconds = millis() - simulatedTempoTapStartTimeInMilliseconds;
 
-  handleSimulatedTempoTap();
+    if(timePassedSinceLastSimulatedTempoTapInMilliseconds >= simulatedTempoTapDurationInMilliseconds)
+    {
+      // Set bool or time to start tempo tap.  
+      simulatedTempoTapStartTimeInMilliseconds = millis();
+    }
+  }
 }
 
 void handleTapTempoButton()
@@ -137,5 +140,6 @@ void loop()
 {
   handleTempoSignalTypeSetting();
   MIDI.read();
+  handleSimulatedTempoTap();
   handleTapTempoButton();
 }
