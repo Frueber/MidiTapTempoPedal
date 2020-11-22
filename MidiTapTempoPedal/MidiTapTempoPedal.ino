@@ -39,16 +39,32 @@ bool isTapTempoButtonHeld = false;
 const byte midiChannel = 1;
 const byte tempoChangeMidiControlChangeNumber = 64;
 
+// Simulated tempo button press (tap) start time in milliseconds.  
+unsigned long simulatedTempoTapStartTimeInMilliseconds = 0;
+
+// Simulated tempo button press (tap) duration in milliseconds.  
+// How long a simulated tempo tap will last.  
+unsigned long simulatedTempoTapDurationInMilliseconds = 50;
+
 void handleTempoSignalTypeSetting()
 {
   isNormallyClosedTempoSignal = digitalRead(normallyClosedTempoSignalPin) == HIGH;
 }
 
-void triggerTempoChangeSignal()
-{  
-  digitalWrite(tipSleevePin, isNormallyClosedTempoSignal ? LOW : HIGH);
-  delay(50);
-  digitalWrite(tipSleevePin, isNormallyClosedTempoSignal ? HIGH : LOW);
+void handleSimulatedTempoTap()
+{
+  unsigned long timePassedSinceLastSimulatedTempoTapInMilliseconds = millis() - simulatedTempoTapStartTimeInMilliseconds;
+
+  if(timePassedSinceLastSimulatedTempoTapInMilliseconds < simulatedTempoTapDurationInMilliseconds)
+  {
+    // Tempo button is pressed.  
+    digitalWrite(tipSleevePin, isNormallyClosedTempoSignal ? LOW : HIGH);
+  }
+  else
+  {
+    // Tempo button is not pressed.  
+    digitalWrite(tipSleevePin, isNormallyClosedTempoSignal ? HIGH : LOW);
+  }
 }
 
 void handleMidiControlChange(
@@ -57,16 +73,20 @@ void handleMidiControlChange(
   byte velocity  
 )
 {
+  // Note that MIDI Thru will allow for all MIDI signals to be relayed.  
+  // We only need to send the MIDI Out control change signal when the tempo button is pressed.  
+  
   if(
     channel == midiChannel
     && number == tempoChangeMidiControlChangeNumber
     && velocity > 0
   )
   {
-    // Note that MIDI Thru will allow for all MIDI signals to be relayed.  
-    // We only need to send the MIDI Out control change signal when the tempo button is pressed.  
-    triggerTempoChangeSignal();
+    // Set bool or time to start tempo tap.  
+    simulatedTempoTapStartTimeInMilliseconds = millis();
   }
+
+  handleSimulatedTempoTap();
 }
 
 void handleTapTempoButton()
