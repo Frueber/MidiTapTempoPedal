@@ -31,10 +31,6 @@ const byte normallyClosedTempoSignalPin = 4;
 // Whether or not the tempo signal type is normally closed, or normally open.  
 bool isNormallyClosedTempoSignal = false;
 
-// Whether or not the tap tempo button is held.  
-// You must release the button in order to trigger another tempo change signal.  
-bool isTapTempoButtonHeld = false;
-
 // MIDI values.  
 const byte midiChannel = 1;
 const byte tempoChangeMidiControlChangeNumber = 64;
@@ -100,22 +96,15 @@ void handleTapTempoButton()
   {
     digitalWrite(tipSleevePin, isNormallyClosedTempoSignal ? LOW : HIGH);
 
-    if(!isTapTempoButtonHeld)
-    {
-      isTapTempoButtonHeld = true;
-
-      MIDI.sendControlChange(
-        tempoChangeMidiControlChangeNumber,
-        127,
-        midiChannel
-      );
-    }
+    MIDI.sendControlChange(
+      tempoChangeMidiControlChangeNumber,
+      127,
+      midiChannel
+    );
   }
   else
   {
     digitalWrite(tipSleevePin, isNormallyClosedTempoSignal ? HIGH : LOW);
-    
-    isTapTempoButtonHeld = false;
   }
 }
 
