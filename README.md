@@ -15,7 +15,7 @@ The pedal can also accept a MIDI control change signal in place of a button pres
 This means you can take advantage of automated tap tempo changes even with pedals that don't directly support MIDI.  
 
 When the pedal receives a MIDI Control Change #64 message, with a value greater than 0, it will relay the signal to the connected pedal(s).  
-A standard tempo change signal, via the TS (1/4" guitar/instrument cable) jack, and a MIDI Control Change #64 message, through the MIDI Out/Thru port, are sent whenever the pedal engaged".  
+A standard tempo change signal, via the TS (1/4" guitar/instrument cable) jack, and a MIDI Control Change #64 message, through the MIDI Out/Thru port, are sent whenever the pedal is engaged".  
 
 This version has targeted the Arduino Nano in order to be small and functional.  
 It's possible that another Arduino board type could be used, such as the UNO or Mega.  
@@ -77,6 +77,12 @@ If you're looking for a PCB (printed circuit board) option you can create your o
 A decent PCB designer tool is [EasyEDA](https://easyeda.com).  
 After designing a board you can get the PCB created by uploading your files to any PCB manufacturer that works for you. One that is connected with EasyEDA is [JLCPCB](https://jlcpcb.com/).  
 You can also wire and/or solder in any way you'd like. Feel free to use the PCB files here for reference.  
+
+#### TOMATO PCB - Top Layer  
+![TOMATO PCB - Top Layer](./Schematics/EasyEDA/Diagrams/PCB_TOMATO%20-%20With%20Connections_Top_11272020.svg)  
+
+#### TOMATO PCB - Bottom Layer  
+![TOMATO PCB - Bottom Layer](./Schematics/EasyEDA/Diagrams/PCB_TOMATO%20-%20With%20Connections_Bottom_11272020.svg)  
 
 ---
 
