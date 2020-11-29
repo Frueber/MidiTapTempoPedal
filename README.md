@@ -2,8 +2,8 @@
 
 Also known as **TOMATO** (Tap or MIDI Automation Tempo Operator).  
 
-A guitar pedal that supports physical tempo taps and MIDI Out/Thru accordingly.  
-The MIDI Tap Tempo Pedal can be any pedal-slingers on-beat bestie.  
+A control pedal that supports physical tempo taps and MIDI In messages to produce the standard 1/4" instrument cable signal as well as a MIDI Out/Thru message accordingly.  
+TOMATO, the MIDI Tap Tempo Pedal, can be any pedal-slingers on-beat bestie.  
 
 ---
 
@@ -36,15 +36,19 @@ It's possible that another Arduino board type could be used, such as the UNO or 
 
 ### Ports  
 
-- 1 TS Jack (Mono 1/4" Guitar Cable Jack).  
+- 1 TS jack (mono 1/4" guitar/instrument cable jack).  
 - 2 MIDI ports (5 pin).  
 - 1 5.5mm x 2.1mm 9V DC electrical jack (chosen power source).  
   > Most tap tempo pedals won't need a power source as a 5V signal will come from the connected pedal. This version is opting for a separate 9V power source to ensure that the Arduino will always have enough power for operation with any connected device(s).  
 
 ### Peripherals  
 
-- 1 guitar pedal foot switch.  
+- 1 momentary foot switch button.  
   > As the Arduino will handle the NC / NO (normally closed / normally open) circuit for button presses there isn't a need for a complex button that can support NC / NO or bypass circuitry. A simple two-pole momentary foot switch is perfect for the job.  
+- 1 switch, such as a single DIP, slide, toggle, or on/off switch.  
+  or  
+  1 2-pin connector; an additional jumper cap would be needed.  
+  > Used for switching between a NC or NO (normally closed/open) tempo signal. If connecting to a device via the instrument cable jack make sure to check the specification of that device before use; choose NC or NO accordingly.  
 
 ### Components  
 
@@ -57,14 +61,10 @@ It's possible that another Arduino board type could be used, such as the UNO or 
   > Or a similar method of connecting/disconnecting pins.  
 - 2 2-pin connectors.  
   > Used with the jumper caps to connect and disconnect the RX and TX pins.  
-- 1 switch, such as a single DIP, slide, toggle, or on/off switch.  
-  or  
-  1 2-pin connector; an additional jumper cap would be needed.  
-  > Used for switching between a NC or NO (normally closed/open) tempo signal. If connecting to a device via the instrument cable jack make sure to check the specification of that device before use; choose NC or NO accordingly.  
 
 ### Case  
 
-- 1 Guitar Pedal Enclosure.  
+- 1 Pedal enclosure.  
   > **Suggestion**  
   > Enclosure 1590B.  
   > It's possible that the components and wiring could all fit inside the 1590A, 
