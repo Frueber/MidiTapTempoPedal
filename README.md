@@ -83,6 +83,13 @@ You can also wire and/or solder in any way you'd like. Feel free to use the PCB 
 
 ---
 
+### Wiring  
+
+A wiring diagram has been provided for the circuit board as well as one for each component of the full circuit.  
+These circuit diagrams are included in the [Schematics](Schematics) folder.  
+
+---
+
 ## Contributors  
 
 Owen Shartle  
