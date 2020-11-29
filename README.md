@@ -2,7 +2,7 @@
 
 Also known as **TOMATO** (Tap or MIDI Automation Tempo Operator).  
 
-A control pedal that supports physical tempo taps and MIDI In messages to produce the standard 1/4" instrument cable signal as well as a MIDI Out/Thru message accordingly.  
+A pedal that will take physical taps (foot switch presses) and MIDI In messages as input and produce a standard 1/4" instrument cable signal as well as a MIDI Out/Thru message accordingly in order to set the tempo of the connected devices.  
 TOMATO, the MIDI Tap Tempo Pedal, can be any pedal-slingers on-beat bestie.  
 
 ---
