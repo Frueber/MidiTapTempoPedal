@@ -78,8 +78,8 @@ A decent PCB designer tool is [EasyEDA](https://easyeda.com).
 After designing a board you can get the PCB created by uploading your files to any PCB manufacturer that works for you. One that is connected with EasyEDA is [JLCPCB](https://jlcpcb.com/).  
 You can also wire and/or solder in any way you'd like. Feel free to use the PCB files here for reference.  
  
-![TOMATO PCB - Top Layer](./Schematics/EasyEDA/Diagrams/PCB_TOMATO%20-%20With%20Connections_Top_11272020.svg) 
-![TOMATO PCB - Bottom Layer](./Schematics/EasyEDA/Diagrams/PCB_TOMATO%20-%20With%20Connections_Bottom_11272020.svg)  
+![TOMATO PCB - Top Layer](./Schematics/EasyEDA/Diagrams/PCB_TOMATO%20-%20With%20Connections_Top_11292020.png) 
+![TOMATO PCB - Bottom Layer](./Schematics/EasyEDA/Diagrams/PCB_TOMATO%20-%20With%20Connections_Bottom_11292020.png)  
 
 ---
 
