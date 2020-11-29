@@ -43,9 +43,9 @@ It's possible that another Arduino board type could be used, such as the UNO or 
 
 ### Peripherals  
 
-- 1 momentary foot switch button.  
-  > As the Arduino will handle the NC / NO (normally closed / normally open) circuit for button presses there isn't a need for a complex button that can support NC / NO or bypass circuitry. A simple two-pole momentary foot switch is perfect for the job.  
-- 1 switch, such as a single DIP, slide, toggle, or on/off switch.  
+- 1 SPST (single pole, single throw) momentary foot switch button.  
+  > As the Arduino will handle the NC / NO (normally closed / normally open) circuit for the connected non-MIDI device, there isn't a need for a complex button that can support NC / NO or bypass circuitry. A simple single-pole normally open momentary foot switch is perfect for the job.  
+- 1 SPDT switch (single DIP, slide, toggle, or on/off switch).  
   or  
   1 2-pin connector; an additional jumper cap would be needed.  
   > Used for switching between a NC or NO (normally closed/open) tempo signal. If connecting to a device via the instrument cable jack make sure to check the specification of that device before use; choose NC or NO accordingly.  
