@@ -30,7 +30,7 @@ It's possible that another Arduino board type could be used, such as the UNO or 
 
 ## Hardware  
 
-### Microprocessor  
+### Microcontroller  
 
 - 1 Arduino Nano.  
 
